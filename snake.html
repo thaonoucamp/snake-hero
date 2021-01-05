@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="cvs" width="400" height="400"></canvas>
+<script>
+    window.onload = function () {
+        cvs = document.getElementById("cvs");
+        ctx = cvs.getContext("2d");
+       document.addEventListener("keydown",direction);
+       setInterval(game,1000/10);
+    }
+     px= py = 10;
+     gs= tc = 20;
+     ax= ay = 15;
+     xv= yv = 0;
+     trail = [];
+     tail = 1;
+     point = 0;
+
+    function game() {
+         px += xv;
+         py += yv;
+         if (px < -1) {
+             return;
+         }else
+        if (px > tc) {
+            return;
+        }else
+        if (py < -1) {
+            return ;
+        }else
+        if (py > tc) {
+            return ;
+        }
+        ctx.fillStyle = "black";
+        ctx.fillRect(0,0, cvs.width, cvs.height);
+
+        ctx.fillStyle = "lime";
+        for (let i = 0; i < trail.length; i++) {
+            ctx.fillRect(trail[i].x * gs, trail[i].y * gs, gs, gs);
+            if (trail[i].x == px && trail[i].y == py) {
+                tail = 1;
+                point = 0;
+            }
+        }
+        trail.push( {
+            x: px,
+            y: py
+        });
+        while(trail.length > tail) {
+            trail.shift();
+        }
+        if (ax == px && ay == py) {
+            tail++;
+            point += 1;
+            console.log(point);
+            ax = Math.floor(Math.random() * tc);
+            ay = Math.floor(Math.random() * tc);
+        }
+        ctx.fillStyle = "red";
+        ctx.fillRect(ax * gs, ay * gs, gs, gs);
+     }
+
+    function direction(evt) {
+        switch (evt.keyCode) {
+            case 37:
+                xv = -1;
+                yv = 0;
+                break;
+            case 38:
+                xv = 0;
+                yv = -1;
+                break;
+            case 39:
+                xv = 1;
+                yv = 0;
+                break;
+            case 40:
+                xv = 0;
+                yv = 1;
+                break;
+        }
+    }
+</script>
+</body>
+</html>
